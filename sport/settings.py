@@ -56,7 +56,7 @@ ROOT_URLCONF = 'sport.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'C:\Users\User\Desktop\Automatic Certificate Generator\static\templets'],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
