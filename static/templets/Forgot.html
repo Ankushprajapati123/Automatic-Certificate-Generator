@@ -1,0 +1,604 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <style>
+        /* =========================
+           ROOT VARIABLES & THEME
+           ========================= */
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary: #06B6D4;
+            --accent: #F59E0B;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --surface-soft: #F1F5F9;
+            --text: #1E293B;
+            --text-secondary: #334155;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 25px -3px rgba(37, 99, 235, 0.08);
+            --shadow-lg: 0 20px 40px -10px rgba(15, 23, 42, 0.15);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --transition-smooth: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* =========================
+           RESET & BASE STYLES
+           ========================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--background);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px;
+            /* Offset for fixed navbar */
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           NAVIGATION BAR (Sticky Glassmorphism)
+           ========================= */
+        header {
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(132, 181, 209, 0.9));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            width: 100%;
+            height: 80px;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition-smooth);
+        }
+
+        .logo {
+            padding: 5px;
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+        }
+
+        .Logo {
+            width: 200px;
+            height: 55px;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            transition: var(--transition-smooth);
+        }
+
+        .Logo:hover {
+            transform: scale(1.03);
+        }
+
+        /* CSS Checkbox Toggle for Mobile Hamburger */
+        .nav-toggle {
+            display: none;
+        }
+
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 32px;
+            height: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1002;
+            transition: var(--transition-smooth);
+        }
+
+        .hamburger-menu .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text);
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+            transform-origin: center;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.05rem;
+            padding: 8px 16px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            position: relative;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 4px;
+            left: 16px;
+            background: var(--primary);
+            transition: var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            background-color: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        nav a:hover::after {
+            width: calc(100% - 32px);
+        }
+
+        /* =========================
+           FORGOT PASSWORD CONTAINER
+           ========================= */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .row {
+            width: 100%;
+            max-width: 480px;
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .row h1 {
+            font-size: 1.8rem;
+            color: var(--text);
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .information-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .form-group input[type="email"] {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            background: var(--surface-soft);
+            color: var(--text);
+            transition: var(--transition-smooth);
+        }
+
+        .form-group input[type="email"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1.02rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            transition: var(--transition-smooth);
+        }
+
+        .form-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(6, 182, 212, 0.35);
+        }
+
+        .footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer h5 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .footer h5 a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+        }
+
+        .footer h5 a:hover {
+            text-decoration: underline;
+            color: var(--primary-dark);
+        }
+
+        /* =========================
+           PREMIUM MODERN FOOTER
+           ========================= */
+        .site-footer {
+            background: linear-gradient(135deg, #090D16 0%, #0F172A 100%);
+            color: #94A3B8;
+            padding: 70px 20px 30px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-col h3 {
+            color: #FFFFFF;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 32px;
+            height: 2px;
+            background: var(--secondary);
+            border-radius: 99px;
+        }
+
+        .footer-col p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo {
+            width: 170px;
+            height: 45px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+            transition: var(--transition-smooth);
+        }
+
+        .footer-logo:hover {
+            transform: scale(1.03);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            display: inline-block;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: var(--secondary);
+            transition: var(--transition-smooth);
+            border-radius: 99px;
+        }
+
+        .footer-links a:hover {
+            color: #FFFFFF;
+            transform: translateX(4px);
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 30px auto 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #64748B;
+        }
+
+        h4 {
+            color: #F8FAFC;
+            font-size: 1.1rem;
+            margin-top: 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* =========================
+           RESPONSIVE DESIGN
+           ========================= */
+        @media (max-width: 992px) {
+            header {
+                padding: 0 25px;
+            }
+
+            nav {
+                gap: 15px;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: flex;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.96);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 40px;
+                gap: 20px;
+                box-shadow: -15px 0 40px rgba(0, 0, 0, 0.2);
+                border-left: 1px solid var(--border);
+                transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+                z-index: 1001;
+            }
+
+            nav a {
+                width: 100%;
+                text-align: center;
+                font-size: 1.1rem;
+                padding: 12px 20px;
+                background: rgba(37, 99, 235, 0.04);
+                border-radius: var(--radius-sm);
+                color: var(--text);
+            }
+
+            nav a::after {
+                display: none;
+            }
+
+            .nav-toggle:checked~nav {
+                right: 0;
+            }
+
+            .nav-toggle:checked~.hamburger-menu .bar:nth-child(1) {
+                transform: translateY(10.5px) rotate(45deg);
+                background-color: var(--primary);
+            }
+
+            .nav-toggle:checked~.hamburger-menu .bar:nth-child(2) {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            .nav-toggle:checked~.hamburger-menu .bar:nth-child(3) {
+                transform: translateY(-10.5px) rotate(-45deg);
+                background-color: var(--primary);
+            }
+
+            .nav-toggle:checked~header::after,
+            body:has(.nav-toggle:checked)::after {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 999;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+       NAVIGATION BAR COMPONENT
+       ========================= -->
+    <header>
+        <div class="logo">
+            <a href="{% url 'base' %}">
+                <img src="{% static 'images/akslogo.png' %}" class="Logo" alt="AKS University Logo">
+            </a>
+        </div>
+
+        <!-- CSS-Only Mobile Hamburger Checkbox & Label Trigger -->
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <label for="nav-toggle" class="hamburger-menu" aria-label="Toggle Navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </label>
+
+        <nav>
+            <a href="{% url 'base' %}">Home</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Register</a>
+            <a href="{% url 'base' %}#contact">Contact</a>
+            <a href="{% url 'about' %}">About us</a>
+        </nav>
+    </header>
+
+    <!-- =========================
+       FORGOT PASSWORD WRAPPER
+       ========================= -->
+    <div class="main-wrapper">
+        <div class="row">
+            <h1>Forgot Password?</h1>
+            <h6 class="information-text">Enter your registered email to reset your password.</h6>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="user_email"></label>
+                    <input type="email" name="user_email" id="user_email" placeholder="Enter your registered email"
+                        required>
+                    <button type="submit">Reset Password</button>
+                </div>
+            </form>
+
+            <div class="footer">
+                <h5>Not registered? <a href="{% url 'signup' %}">Register</a></h5>
+                <h5>Already have an account? <a href="{% url 'login' %}">Login</a></h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================
+       PREMIUM MODERN FOOTER COMPONENT
+       ========================= -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <!-- Brand / About Section -->
+            <div class="footer-col">
+                <img src="{% static 'images/akslogo.png' %}" class="footer-logo"
+                    alt="Automatic Certificate Generator Logo">
+                <h3>Automatic Certificate Generator</h3>
+                <p>An advanced cloud platform designed to streamline, automate, and issue professional verification
+                    certificates for academic institutions, sports events, workshops, and corporate training programs.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'base' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Certificate Generator</a></li>
+                    <li><a href="{% url 'base' %}#contact">Contact</a></li>
+                    <li><a href="{% url 'login' %}">Login / Register</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal Links -->
+            <div class="footer-col">
+                <h3>Legal & Policy</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Support & Contact -->
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'base' %}#contact">Contact Us</a></li>
+                    <li><a href="#">Help & FAQ</a></li>
+                    <li><a href="#">Support Portal</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright & Bottom Bar -->
+        <div class="footer-bottom">
+            <p>&copy; 2026 Automatic Certificate Generator. All Rights Reserved.</p>
+            <p>Designed for Academic Excellence & Secure Verification</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

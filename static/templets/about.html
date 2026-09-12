@@ -1,0 +1,733 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - AKS University Sports & Campus</title>
+    <style>
+        /* =========================
+           ROOT VARIABLES & THEME (Matched with Login/Signup)
+           ========================= */
+        :root {
+            --primary: #14532D;
+            --primary-dark: #052E16;
+            --primary-light: #16A34A;
+            --secondary: #F59E0B;
+            --secondary-light: #FBBF24;
+            --accent: #0EA5E9;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --surface-soft: #ECFDF5;
+            --text: #0F172A;
+            --text-secondary: #334155;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 25px -3px rgba(20, 83, 45, 0.1);
+            --shadow-lg: 0 20px 40px -10px rgba(5, 46, 22, 0.2);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* =========================
+           RESET & BASE STYLES
+           ========================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* =========================
+           NAVIGATION BAR & HEADER (CSS-Only Hamburger)
+           ========================= */
+        header {
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(132, 181, 209, 0.9));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            width: 100%;
+            height: 80px;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition-smooth);
+        }
+
+        .logo {
+            padding: 5px;
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+        }
+
+        .Logo {
+            width: 200px;
+            height: 55px;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            transition: var(--transition-smooth);
+        }
+
+        .Logo:hover {
+            transform: scale(1.03);
+        }
+
+        /* CSS Checkbox Toggle for Hamburger */
+        .nav-toggle {
+            display: none;
+        }
+
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 32px;
+            height: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1002;
+            transition: var(--transition-smooth);
+        }
+
+        .hamburger-menu .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--text);
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+            transform-origin: center;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.05rem;
+            padding: 8px 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            position: relative;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 4px;
+            left: 16px;
+            background: rgb(233, 134, 68);
+            transition: var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        nav a:hover,
+        nav a.active {
+            background-color: rgba(233, 134, 68, 0.1);
+            color: rgb(233, 134, 68);
+            transform: translateY(-2px);
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: calc(100% - 32px);
+        }
+
+        /* =========================
+           HERO CARD SECTION
+           ========================= */
+        .about-hero {
+            background: linear-gradient(rgba(5, 46, 22, 0.85), rgba(20, 83, 45, 0.75)),
+            url("{% static 'images/a_block.jpg' %}") no-repeat center center/cover;
+            min-height: 55vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            position: relative;
+        }
+
+        .about-hero-content {
+            max-width: 900px;
+            animation: fadeInDown 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .about-hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            text-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-hero-content p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: #E2E8F0;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* =========================
+           CONTENT & ANIMATED CARDS CONTAINER
+           ========================= */
+        .about-main-container {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 25px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .about-card-box {
+            background: var(--surface);
+            padding: clamp(30px, 5vw, 55px);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .about-card-box h2 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .about-card-box p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, rgba(20, 83, 45, 0.06), rgba(245, 158, 11, 0.08));
+            border-left: 5px solid var(--primary);
+            padding: 20px 25px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 30px 0;
+        }
+
+        .quote-box samp {
+            color: var(--primary);
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        /* Grid of Animated Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0.8;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 35px rgba(20, 83, 45, 0.15);
+            border-color: rgba(20, 83, 45, 0.3);
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            color: var(--text);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            text-align: left;
+            margin-bottom: 0;
+        }
+
+        .cta-wrap {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-contact {
+            display: inline-block;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, var(--secondary), #d97706);
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
+        /* =========================
+           PREMIUM MODERN FOOTER
+           ========================= */
+        .site-footer {
+            background: linear-gradient(135deg, #090D16 0%, #0F172A 100%);
+            color: #94A3B8;
+            padding: 70px 20px 30px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-col h3 {
+            color: #FFFFFF;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 32px;
+            height: 2px;
+            background: var(--secondary);
+            border-radius: 99px;
+        }
+
+        .footer-col p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #94A3B8;
+            text-align: left;
+        }
+
+        .footer-logo {
+            width: 170px;
+            height: 45px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+            transition: var(--transition-smooth);
+        }
+
+        .footer-logo:hover {
+            transform: scale(1.03);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            display: inline-block;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: var(--secondary);
+            transition: var(--transition-smooth);
+            border-radius: 99px;
+        }
+
+        .footer-links a:hover {
+            color: #FFFFFF;
+            transform: translateX(4px);
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 30px auto 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #64748B;
+        }
+
+        /* =========================
+           ANIMATIONS
+           ========================= */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE DESIGN
+           ========================= */
+        @media (max-width: 992px) {
+            header {
+                padding: 0 25px;
+            }
+
+            nav {
+                gap: 15px;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: flex;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.96);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 40px;
+                gap: 20px;
+                box-shadow: -15px 0 40px rgba(0, 0, 0, 0.2);
+                border-left: 1px solid var(--border);
+                transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+                z-index: 1001;
+            }
+
+            nav a {
+                width: 100%;
+                text-align: center;
+                font-size: 1.1rem;
+                padding: 12px 20px;
+                background: rgba(233, 134, 68, 0.08);
+                border-radius: 8px;
+                color: var(--text);
+            }
+
+            nav a::after {
+                display: none;
+            }
+
+            .nav-toggle:checked~nav {
+                right: 0;
+            }
+
+            .nav-toggle:checked~.hamburger-menu .bar:nth-child(1) {
+                transform: translateY(10.5px) rotate(45deg);
+                background-color: var(--primary);
+            }
+
+            .nav-toggle:checked~.hamburger-menu .bar:nth-child(2) {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            .nav-toggle:checked~.hamburger-menu .bar:nth-child(3) {
+                transform: translateY(-10.5px) rotate(-45deg);
+                background-color: var(--primary);
+            }
+
+            .nav-toggle:checked~header::after,
+            body:has(.nav-toggle:checked)::after {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 999;
+            }
+
+            .about-main-container {
+                margin-top: 30px;
+                padding: 0 15px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- =========================
+       NAVIGATION BAR COMPONENT
+       ========================= -->
+    <header>
+        <div class="logo">
+            <a href="{% url 'base' %}">
+                <img src="{% static 'images/akslogo.png' %}" class="Logo" alt="AKS University Logo">
+            </a>
+        </div>
+
+        <!-- CSS-Only Mobile Hamburger Checkbox & Label Trigger -->
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <label for="nav-toggle" class="hamburger-menu" aria-label="Toggle Navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </label>
+
+        <nav>
+            <a href="{% url 'base' %}">Home</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Register</a>
+            <a href="{% url 'base' %}#contact">Contact</a>
+            <a href="{% url 'about' %}" class="active">About us</a>
+        </nav>
+    </header>
+
+    <!-- =========================
+       HERO CARD BANNER
+       ========================= -->
+    <section class="about-hero">
+        <div class="about-hero-content">
+            <h1>Excellence in Education & Sports</h1>
+            <p>Discover AKS University Satna A premier institution fostering academic brilliance, leadership, and
+                athletic prowess across 20+ acres of world-class campus infrastructure.</p>
+        </div>
+    </section>
+
+    <!-- =========================
+       MAIN ABOUT & CAMPUS FEATURES
+       ========================= -->
+    <main class="about-main-container">
+        <div class="about-card-box">
+            <h2>About AKS University & Sports Ecosystem</h2>
+            <p>
+                A fit mind is an active mind. Along with robust academic pursuits in engineering, agriculture,
+                management, and sciences, AKS University places immense emphasis on games, sports, and physical
+                conditioning. We believe that athletic participation builds core life skills such as teamwork, strategic
+                thinking, discipline, and humility under victory or defeat.
+            </p>
+
+            <div class="quote-box">
+                <samp>"Khelega India Jeetega India"</samp>
+            </div>
+
+            <p>
+                Spanning over 20+ acres of lush green campus on Panna Road, Satna, our sports and academic
+                infrastructure ensures holistic student growth. From vibrant inter-university championships to active
+                marathons like the Satna Half Marathon, our students consistently excel at regional and state levels.
+            </p>
+
+            <!-- Animated Feature Cards -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="{% static 'images/cricket1.webp' %}" alt="Outdoor Sports Grounds">
+                    <h3>Outdoor Sports Arena</h3>
+                    <p>Dedicated lush green multi-sport grounds for Cricket, Football, Volleyball, and track athletics
+                        equipped for regular matches.</p>
+                </div>
+
+                <div class="feature-card">
+                    <img src="{% static 'images/batmintan.jpg' %}" alt="Indoor Games">
+                    <h3>Indoor & Fitness Hub</h3>
+                    <p>State-of-the-art facilities for Badminton, Table Tennis, chess, and modern campus gymnasiums for
+                        complete physical wellness.</p>
+                </div>
+
+                <div class="feature-card">
+                    <img src="{% static 'images/a_block.jpg' %}" alt="Smart Campus Infrastructure">
+                    <h3>World-Class Infrastructure</h3>
+                    <p>Advanced smart-class blocks, research labs, high-tech auditoriums, and secure hostels fostering
+                        dynamic student living.</p>
+                </div>
+            </div>
+
+            <div class="cta-wrap">
+                <a href="{% url 'base' %}#contact" class="btn-contact">Connect With Us</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========================
+       PREMIUM MODERN FOOTER COMPONENT
+       ========================= -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <!-- Brand / About Section -->
+            <div class="footer-col">
+                <img src="{% static 'images/akslogo.png' %}" class="footer-logo"
+                    alt="Automatic Certificate Generator Logo">
+                <h3>Automatic Certificate Generator</h3>
+
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'base' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Certificate Generator</a></li>
+                    <li><a href="{% url 'base' %}#contact">Contact</a></li>
+                    <li><a href="{% url 'login' %}">Login / Register</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal Links -->
+            <div class="footer-col">
+                <h3>Legal & Policy</h3>
+                <ul class="footer-links">
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                    <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Support & Contact -->
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'base' %}#contact">Contact Us</a></li>
+                    <li><a href="faq.html">Help & FAQ</a></li>
+                    <li><a href="support.html">Support Portal</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright & Bottom Bar -->
+        <div class="footer-bottom">
+            <p>&copy; 2026 Automatic Certificate Generator. All Rights Reserved.</p>
+            <p>Designed for Academic Excellence & Secure Verification</p>
+        </div>
+    </footer>
+</body>
+
+</html>
